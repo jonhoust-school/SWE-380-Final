@@ -1,0 +1,13 @@
+{
+  "name": "lab",
+  "version": "1.0.0",
+  "description": "Electron notes UI based on screenshots",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "electron": "^36.0.0"
+  }
+}

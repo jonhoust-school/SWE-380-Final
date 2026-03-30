@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self';"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lab Notes</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <main class="workspace">
+        <aside class="sidebar" id="sidebar">
+          <div class="sidebar-search">
+            <button class="icon-btn dark-icon-btn" title="Search">⌕</button>
+            <input
+              id="searchInput"
+              type="text"
+              placeholder="Search..."
+              aria-label="Search notes"
+            />
+          </div>
+
+          <div class="note-list" id="noteList"></div>
+
+          <div class="sidebar-footer">
+            <button id="addNoteBtn" class="add-note-btn">Add New Note</button>
+          </div>
+        </aside>
+
+        <div class="sidebar-resizer" id="sidebarResizer" aria-label="Resize sidebar"></div>
+
+        <section class="editor-shell">
+          <header class="topbar">
+            <div class="topbar-left">
+              <button class="icon-btn" title="Back">↩</button>
+              <button class="icon-btn" id="toggleSidebarBtn" title="Toggle sidebar">
+                ≡
+              </button>
+
+              <div class="title-wrap">
+                <span id="noteTitle">New Note</span>
+              </div>
+            </div>
+
+            <div class="topbar-right">
+              <label class="notes-hidden-wrap">
+                <input id="notesHiddenCheckbox" type="checkbox" checked />
+                <span>Notes Hidden</span>
+              </label>
+
+              <button class="icon-btn" title="More">⋮</button>
+            </div>
+          </header>
+
+          <div class="editor-toolbar hidden" id="editorToolbar">
+            <button class="toolbar-btn">H1 <span class="caret">▾</span></button>
+            <button class="toolbar-btn">☰ <span class="caret">▾</span></button>
+            <button class="toolbar-btn bold">B</button>
+            <button class="toolbar-btn italic">I</button>
+            <button class="toolbar-btn">🔗</button>
+            <button class="toolbar-btn">⊞ <span class="caret">▾</span></button>
+            <button class="toolbar-btn">A̷</button>
+          </div>
+
+          <section class="content">
+            <div class="placeholder" id="placeholderText">
+              Add a new Note, or Start typing here.
+            </div>
+
+            <textarea
+              id="editor"
+              class="editor"
+              spellcheck="false"
+            ></textarea>
+          </section>
+        </section>
+      </main>
+
+      <div class="modal-overlay hidden" id="modalOverlay">
+        <div class="modal">
+          <div class="modal-title">Create New Note</div>
+
+          <label class="field-label" for="newNoteName">File Name</label>
+          <input id="newNoteName" class="field-input" type="text" />
+
+          <label class="field-label" for="newNoteType">File Type</label>
+          <select id="newNoteType" class="field-input">
+            <option value="txt">txt</option>
+            <option value="md">md</option>
+          </select>
+
+          <div class="modal-actions">
+            <button id="cancelModalBtn" class="link-btn">CANCEL</button>
+            <button id="createModalBtn" class="link-btn">CREATE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./renderer.js"></script>
+  </body>
+</html>
