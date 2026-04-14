@@ -36,8 +36,23 @@
         <section class="editor-shell">
           <header class="topbar">
             <div class="topbar-left">
-              <button class="icon-btn" title="Back">↩</button>
-              <button class="icon-btn" id="toggleSidebarBtn" title="Toggle sidebar">
+              <button
+                class="icon-btn sidebar-arrow-btn"
+                id="sidebarArrowBtn"
+                type="button"
+                title="Toggle sidebar"
+                aria-label="Toggle sidebar"
+              >
+                ↩
+              </button>
+
+              <button
+                class="icon-btn"
+                id="topbarMenuBtn"
+                type="button"
+                title="Menu"
+                aria-label="Menu"
+              >
                 ≡
               </button>
 
@@ -47,24 +62,20 @@
             </div>
 
             <div class="topbar-right">
-              <label class="notes-hidden-wrap">
-                <input id="notesHiddenCheckbox" type="checkbox" checked />
+              <label class="notes-hidden-wrap" for="notesHiddenCheckbox">
+                <input id="notesHiddenCheckbox" type="checkbox" />
                 <span>Notes Hidden</span>
               </label>
+            </div>
 
-              <button class="icon-btn" title="More">⋮</button>
+            <div class="topbar-dropdown hidden" id="topbarDropdown">
+              <button class="dropdown-item" id="menuSaveBtn" type="button">Save</button>
+              <button class="dropdown-item" id="menuSaveAsBtn" type="button">Save As</button>
+              <button class="dropdown-item" id="menuDeleteBtn" type="button">Delete</button>
+              <button class="dropdown-item" id="menuExportBtn" type="button">Export</button>
+              <button class="dropdown-item" id="menuDuplicateBtn" type="button">Duplicate</button>
             </div>
           </header>
-
-          <div class="editor-toolbar hidden" id="editorToolbar">
-            <button class="toolbar-btn">H1 <span class="caret">▾</span></button>
-            <button class="toolbar-btn">☰ <span class="caret">▾</span></button>
-            <button class="toolbar-btn bold">B</button>
-            <button class="toolbar-btn italic">I</button>
-            <button class="toolbar-btn">🔗</button>
-            <button class="toolbar-btn">⊞ <span class="caret">▾</span></button>
-            <button class="toolbar-btn">A̷</button>
-          </div>
 
           <section class="content">
             <div class="placeholder" id="placeholderText">
@@ -87,10 +98,10 @@
           <label class="field-label" for="newNoteName">File Name</label>
           <input id="newNoteName" class="field-input" type="text" />
 
-          <label class="field-label" for="newNoteType">File Type</label>
           <select id="newNoteType" class="field-input">
             <option value="txt">txt</option>
             <option value="md">md</option>
+            <option value="pdf">pdf</option>
           </select>
 
           <div class="modal-actions">
@@ -101,6 +112,6 @@
       </div>
     </div>
 
-    <script src="./renderer.js"></script>
+    <script type="module" src="./renderer.js"></script>
   </body>
 </html>

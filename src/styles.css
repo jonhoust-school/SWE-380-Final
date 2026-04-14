@@ -1,8 +1,3 @@
-/* styles.css */
-/* These were mainly taken from https://m3.material.io/ */
-/* Small tweaks were made to match the tech stack and fit requriements */
-
-
 * {
   box-sizing: border-box;
 }
@@ -30,7 +25,8 @@ textarea {
   --sidebar-width: 220px;
   --resizer-width: 5px;
   --topbar-height: 34px;
-  --toolbar-height: 34px;
+  --app-blue: #1976d2;
+  --topbar-text: #ffffff;
 }
 
 .app {
@@ -115,7 +111,7 @@ textarea {
 
 .add-note-btn {
   width: 100%;
-  height: 30px;
+  height: 34px;
   background: #1e88e5;
   color: #ffffff;
   border: none;
@@ -150,17 +146,20 @@ body.resizing .sidebar-resizer {
   min-height: 0;
 }
 
-/* Top bar only for editor section */
+/* Top bar */
 .topbar {
+  position: relative;
   height: var(--topbar-height);
   min-height: var(--topbar-height);
-  background: #1976d2;
-  color: #ffffff;
+  background: var(--app-blue);
+  color: var(--topbar-text);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 8px;
+  padding: 0 10px;
   gap: 12px;
+  flex: 0 0 var(--topbar-height);
+  z-index: 5;
 }
 
 .topbar-left,
@@ -168,85 +167,142 @@ body.resizing .sidebar-resizer {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
+}
+
+.topbar-left {
+  flex: 1;
+}
+
+.topbar-right {
+  flex: 0 0 auto;
 }
 
 .icon-btn {
   border: none;
   background: transparent;
-  color: white;
+  color: var(--topbar-text);
   font-size: 14px;
   line-height: 1;
   cursor: pointer;
   padding: 2px 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  opacity: 0.9;
 }
 
 .title-wrap {
+  min-width: 0;
   font-size: 12px;
+  font-weight: 600;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--topbar-text);
 }
 
 .notes-hidden-wrap {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   font-size: 10px;
+  color: var(--topbar-text);
   cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
 }
 
 .notes-hidden-wrap input {
   width: 11px;
   height: 11px;
+  margin: 0;
 }
 
-/* Formatting bar inside editor section only */
-.editor-toolbar {
-  height: var(--toolbar-height);
-  min-height: var(--toolbar-height);
-  background: #2f2f2f;
-  color: white;
+.sidebar-arrow-btn {
+  transition: transform 0.2s ease;
+}
+
+body.sidebar-hidden .sidebar-arrow-btn {
+  transform: rotate(180deg);
+}
+
+/* Dropdown */
+.topbar-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 36px;
+  min-width: 150px;
+  background: #ffffff;
+  border: 1px solid #d7d7d7;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  z-index: 200;
   display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0 16px;
-  border-bottom: 1px solid #404040;
+  flex-direction: column;
+  padding: 4px 0;
 }
 
-.toolbar-btn {
+.dropdown-item {
   border: none;
-  background: transparent;
-  color: white;
-  font-size: 14px;
+  background: #ffffff;
+  color: #222;
+  text-align: left;
+  padding: 9px 12px;
+  font-size: 12px;
   cursor: pointer;
-  padding: 4px 6px;
+  z-index: 200
 }
 
-.toolbar-btn.bold {
-  font-weight: 700;
-  font-size: 18px;
+.dropdown-item:hover {
+  background: #f3f3f3;
 }
 
-.toolbar-btn.italic {
-  font-style: italic;
-  font-size: 18px;
+/* Let toolbar popups escape the bar */
+.wysiwyg-editor-host {
+  overflow: visible !important;
 }
 
-.caret {
-  font-size: 10px;
+.wysiwyg-editor-host .toastui-editor-defaultUI {
+  overflow: visible !important;
 }
 
-/* Content */
+.wysiwyg-editor-host .toastui-editor-toolbar {
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+/* Actual dropdown / popup menus */
+.wysiwyg-editor-host .toastui-editor-popup,
+.wysiwyg-editor-host .toastui-editor-popup-add-heading,
+.wysiwyg-editor-host .toastui-editor-popup-add-table,
+.wysiwyg-editor-host .toastui-editor-popup-body {
+  z-index: 50;
+}
+
+/* Keep the editor area below the popup layer */
+.wysiwyg-editor-host .toastui-editor-main {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Main content */
 .content {
   flex: 1;
-  position: relative;
-  background: #efefef;
   min-height: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #efefef;
+  overflow: hidden;
 }
 
 .placeholder {
   position: absolute;
-  top: 2px;
-  left: 0;
-  right: 0;
+  top: 10px;
+  left: 12px;
   color: #8d8d8d;
   font-size: 10px;
   pointer-events: none;
@@ -263,7 +319,171 @@ body.resizing .sidebar-resizer {
   color: #222;
   font-size: 12px;
   line-height: 1.45;
-  padding: 14px 12px 12px 0;
+  padding: 14px 12px 12px 12px;
+}
+
+.editor-hidden {
+  display: none !important;
+}
+
+/* Rich editor host */
+.wysiwyg-editor-host {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: none;
+  background: #3a3a3a;
+  overflow: hidden;
+}
+
+/* Toast UI overall shell */
+.wysiwyg-editor-host .toastui-editor-defaultUI {
+  height: 100% !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  border: none !important;
+  background: #3a3a3a !important;
+  overflow: hidden !important;
+}
+
+/* Toolbar strip directly under blue bar */
+.wysiwyg-editor-host .toastui-editor-defaultUI-toolbar {
+  flex: 0 0 auto !important;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  white-space: nowrap !important;
+  min-height: 44px !important;
+  padding: 4px 8px !important;
+  background: #2f2f2f !important;
+  border: none !important;
+  border-bottom: 1px solid #404040 !important;
+  gap: 4px !important;
+  top: 100%;
+  z-index: 50;
+}
+
+/* Toolbar strip directly under blue bar */
+/* wysiwyg-editor-host .toastui-editor-toolbar {
+  flex: 0 0 auto !important;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  white-space: nowrap !important;
+  min-height: 44px !important;
+  height: 44px !important;
+  padding: 4px 8px !important;
+  background: #2f2f2f !important;
+  border: none !important;
+  border-bottom: 1px solid #404040 !important;
+  gap: 4px !important;
+} */
+
+/* Keep each toolbar group on one line */
+.wysiwyg-editor-host .toastui-editor-toolbar-group {
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  align-items: center !important;
+  white-space: nowrap !important;
+  gap: 4px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Divider stays in the toolbar row */
+.wysiwyg-editor-host .toastui-editor-toolbar-divider {
+  flex: 0 0 auto !important;
+  width: 1px !important;
+  height: 18px !important;
+  margin: 0 2px !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.14) !important;
+}
+
+.wysiwyg-editor-host .toastui-editor-toolbar button {
+  position: relative;
+  flex: 0 0 auto !important;
+  min-width: 0 !important;
+  height: 30px !important;
+  padding: 0 10px !important;
+  margin: 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: 6px !important;
+  background: #3a3a3a !important;
+  color: #3a3a3a !important;
+  opacity: 1 !important;
+  box-shadow: none !important;
+}
+
+/* Hide broken sprite background */
+.wysiwyg-editor-host .toastui-editor-toolbar-icons {
+  background-image: none !important;
+  width: auto !important;
+  height: auto !important;
+  text-indent: 0 !important;
+  overflow: visible !important;
+  margin: 0 !important;
+}
+
+/* Show readable text labels instead of missing icons */
+.wysiwyg-editor-host .toastui-editor-toolbar button::after {
+  content: attr(aria-label);
+  font-size: 11px;
+  line-height: 1;
+  color: #efefef;
+}
+
+/* Main editor body only */
+.wysiwyg-editor-host .toastui-editor-main {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  background: #efefef !important;
+  overflow: hidden !important;
+}
+
+.wysiwyg-editor-host .toastui-editor-ww-container,
+.wysiwyg-editor-host .toastui-editor-md-container {
+  height: 100% !important;
+  background: #efefef !important;
+}
+
+.wysiwyg-editor-host .toastui-editor-contents {
+  color: #222 !important;
+  font-size: 13px;
+}
+
+/* Actual editable surface */
+.wysiwyg-editor-host .ProseMirror,
+.wysiwyg-editor-host .toastui-editor-md-preview,
+.wysiwyg-editor-host .toastui-editor-md-container .toastui-editor {
+  min-height: 100% !important;
+  background: #efefef !important;
+  color: #222 !important;
+}
+
+.wysiwyg-editor-host .ProseMirror {
+  padding: 16px 18px !important;
+  outline: none !important;
+}
+
+/* Hide bottom mode switch */
+.wysiwyg-editor-host .toastui-editor-mode-switch {
+  display: none !important;
+}
+
+/* Hide the More button from view */
+.wysiwyg-editor-host .toastui-editor-toolbar-group[style*="display: none"] {
+  display: none !important;
+}
+
+/* Hide the More button from view */
+.wysiwyg-editor-host .toastui-editor-toolbar button.more,
+.wysiwyg-editor-host .toastui-editor-toolbar .more.toastui-editor-toolbar-icons {
+  display: none !important;
 }
 
 /* Modal */
@@ -291,7 +511,7 @@ body.resizing .sidebar-resizer {
 }
 
 .field-label {
-  display: block;
+  display: flex;
   font-size: 9px;
   color: #666;
   margin-bottom: 4px;
@@ -322,6 +542,7 @@ body.resizing .sidebar-resizer {
   padding: 0;
 }
 
+/* Utility */
 .hidden {
   display: none !important;
 }
@@ -329,4 +550,18 @@ body.resizing .sidebar-resizer {
 .sidebar-hidden .sidebar,
 .sidebar-hidden .sidebar-resizer {
   display: none;
+}
+
+.pdf-viewer-host {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  background: #efefef;
+}
+
+.pdf-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #efefef;
 }
